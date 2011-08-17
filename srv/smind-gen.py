@@ -51,6 +51,7 @@ class Main (smind.Main):
 		print ("<table cellpadding='0' cellspacing='0'>")
 		print ("\t" * 1 + "<thead>")
 		print ("\t" * 2 + "<tr>")
+		print ("\t" * 3 + "<th>#</th>")
 		print ("\t" * 3 + "<th>time</th>")
 		for ty in self.nnames:
 			if not ty in ha or not ha[ty]:
@@ -65,12 +66,15 @@ class Main (smind.Main):
 			for n in range (0, ha[ty]):
 				for tty in self.nnames[ty]:
 					print ("\t" * 3 + "<th>" + tty + "</th>")
+				print ("\t" * 3 + "<th>#</th>")
 				print ("\t" * 3 + "<th>time</th>")
 		print ("\t" * 2 + "</tr>")
 		print ("\t" * 1 + "</thead>")
 		print ("\t" * 1 + "<tbody>")
+		_i = 0
 		for node in macj:
 			print ("\t" * 2 + "<tr>")
+			print ("\t" * 3 + "<td>" + str (i) + "</td>")
 			print ("\t" * 3 + "<td>" + str (macj[node]['__time']) + "</td>")
 			for ty in self.nnames:
 				if not ty in ha:
