@@ -2,7 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 import time
-mport MySQLdb
+import MySQLdb
 import os
 import sys
 import select
