@@ -73,8 +73,9 @@ class Main (smind.Main):
 		print ("\t" * 1 + "<tbody>")
 		_i = 0
 		for node in macj:
+			_i += 1
 			print ("\t" * 2 + "<tr>")
-			print ("\t" * 3 + "<td>" + str (i) + "</td>")
+			print ("\t" * 3 + "<td>" + str (_i) + "</td>")
 			print ("\t" * 3 + "<td>" + str (macj[node]['__time']) + "</td>")
 			for ty in self.nnames:
 				if not ty in ha:
