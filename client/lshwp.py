@@ -54,7 +54,7 @@ if __name__ == '__main__':
 			sys.stdout.write ('id|' + open ('/etc/vlintid').read ().split ('\n')[0].strip ()[1:40] + '\n')
 	except: pass
 	# hw
-	fd = os.popen ('lshw -xml 2>/dev/null')
+	fd = os.popen ('lshw -xml 2>/dev/null | grep -v lastmountpoint')
 	printlshw (fd)
 	del fd
 	# host
