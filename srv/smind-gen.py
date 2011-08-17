@@ -3,6 +3,7 @@
 
 import os
 import sys
+import time
 
 sys.path.insert (0, '.')
 smind = __import__ ('smind-srv')
@@ -21,7 +22,7 @@ class Main (smind.Main):
 			for node in c.fetchall ():
 				if not mac[1] in macj:
 					# if not machine in list
-					macj[mac[1]] = {}
+					macj[mac[1]] = {'__time': mac[2]}
 				if not node[2] in macj[mac[1]]:
 					# if not gadget_type in list
 					macj[mac[1]][node[2]] = []
@@ -35,7 +36,8 @@ class Main (smind.Main):
 		#print (macj)
 		print ("""<html>
 		<head>
-			<title>nicepingue</title>
+			<meta http-equiv="content-type" content="text/html; charset=utf-8">
+			<title>nicepingue :: """ + time.ctime () +  """</title>
 			<style type='text/css'>
 				th, td
 				{
@@ -49,12 +51,14 @@ class Main (smind.Main):
 		print ("<table cellpadding='0' cellspacing='0'>")
 		print ("\t" * 1 + "<thead>")
 		print ("\t" * 2 + "<tr>")
+		print ("\t" * 3 + "<th>time</th>")
 		for ty in self.nnames:
 			if not ty in ha or not ha[ty]:
 				continue
 			print ("\t" * 3 + "<th colspan='" + str (ha[ty] * (len (self.nnames[ty]) + 1)) + "'>" + ty + "</th>")
 		print ("\t" * 2 + "</tr>")
 		print ("\t" * 2 + "<tr>")
+		print ("\t" * 3 + "<th>last query's time</th>")
 		for ty in self.nnames:
 			if not ty in ha or not ha[ty]:
 				continue
@@ -67,6 +71,7 @@ class Main (smind.Main):
 		print ("\t" * 1 + "<tbody>")
 		for node in macj:
 			print ("\t" * 2 + "<tr>")
+			print ("\t" * 3 + "<td>" + str (macj[node]['__time']) + "</td>")
 			for ty in self.nnames:
 				if not ty in ha:
 					continue
