@@ -2,7 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 import time
-import MySQLdb
+mport MySQLdb
 import os
 import sys
 import select
@@ -54,16 +54,18 @@ class Main:
 				except: pass
 			elif line[0] == 'socket_addr':
 				self.socket_addr = (line[1])
+		# open mysql
+		self._db = MySQLdb.connect (host = self.mysql_addr,
+				user = self.mysql_user,
+				passwd = self.mysql_pass,
+				db = self.mysql_db)
 	def lis (self):
+		# set listen
 		self._s = socket.socket (self.socket_famy, socket.SOCK_STREAM, 0)
 		self._s.bind (self.socket_addr)
 		self._s.listen (10)
 		if self.socket_famy == socket.AF_UNIX:
 			os.chmod (self.socket_addr, 0770)
-		self._db = MySQLdb.connect (host = self.mysql_addr,
-				user = self.mysql_user,
-				passwd = self.mysql_pass,
-				db = self.mysql_db)
 	def clo (self):
 		""" закрытие сервера """
 		if self._s:
