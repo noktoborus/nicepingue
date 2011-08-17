@@ -5,7 +5,7 @@ import xml.dom.minidom
 import sys
 import os
 
-def printagsData (dom, prepr, tags):
+def printagsData (dom, prepr, tags, strict):
 	_s = {}
 	for p in dom.childNodes:
 		if not 'tagName' in dir (p):
@@ -20,13 +20,16 @@ def printagsData (dom, prepr, tags):
 					try:
 						_s[p.tagName] += q.data
 					except: pass
-	sys.stdout.write (prepr)
+	line = ""
 	for q in tags:
 		if q in _s:
-			sys.stdout.write ('|' + _s[q])
+			line += '|' + _s[q]
 		else:
-			sys.stdout.write ('|')
-	sys.stdout.write ('\n')
+			line += '|'
+			if strict:
+				if q in strict:
+					return
+	sys.stdout.write (prepr + line + '\n')
 
 def printlshw (xmlfd):
 	x = xml.dom.minidom.parse (xmlfd)
@@ -35,18 +38,17 @@ def printlshw (xmlfd):
 		if not handlen:
 			continue
 		idn = xx.getAttribute ('id').split (':', 1)[0]
-		match = {
-				'core': ('board', 'vendor', 'product', 'serial'),
-				'cpu': (None, 'product', 'serial', 'slot'),
-				'disk': (None, 'product', 'serial', 'size'),
-				'bank': ('mem', 'description', 'size'),
-				'network': ('net', 'product', 'serial'),
-
+		match = { # список: { 'узел': (['замена на тег', 'столбец1', 'столбец2', 'столбецn'], ['обязательный столбец1', 'обязательный столбец2']) }
+				'core': (['board', 'vendor', 'product', 'serial'], []),
+				'cpu': ([None, 'product', 'serial', 'slot'], ['slot']),
+				'disk': ([None, 'product', 'serial', 'size'], ['product', 'serial']),
+				'bank': (['mem', 'description', 'size'], ['size']),
+				'network': (['net', 'product', 'serial'], ['serial']),
 				}
 		# ***
 		if not idn in match.keys ():
 			continue
-		printagsData (xx, match[idn][0] or idn, tuple (match[idn][1:]))
+		printagsData (xx, match[idn][0][0] or idn, tuple (match[idn][0][1:]), tuple (match[idn][1]))
 
 if __name__ == '__main__':
 	try:
