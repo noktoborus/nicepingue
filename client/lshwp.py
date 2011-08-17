@@ -53,7 +53,7 @@ def printlshw (xmlfd):
 if __name__ == '__main__':
 	try:
 		if os.path.exists ('/etc/vlintid'):
-			sys.stdout.write ('id|' + open ('/etc/vlintid').read ().split ('\n')[0].strip ()[1:40] + '\n')
+			sys.stdout.write ('id|' + open ('/etc/vlintid').read ().split ('\n')[0].strip ()[0:40] + '\n')
 	except: pass
 	# hw
 	fd = os.popen ('lshw -xml 2>/dev/null | grep -v lastmountpoint')
